@@ -1,0 +1,16 @@
+---
+layout: default
+title: Welcome
+---
+
+h2(#what_is_simpel).  What is SimPEL?
+
+Long-living and asynchronous processes are traditionally hard to write: they usually require persistence, transactions support, error and compensation handling... all of which are pretty hard to get right. Many business process languages have been designed to facilitate this by providing higher-level constructs, WS-BPEL seems to be the most successful. The only problem is: those are actually also pretty hard to write, authoring XML programs is never fun.
+
+SimPEL (stands for Simple Process Execution Language) has been designed to sooth this pain and make writing long-running processes actually... easy. It feels and looks like a scripting language, if you’re familiar with Javascript or Ruby it shouldn’t take you long to pick it up. It executes in an environment that’s able to call functions in your favorite programming language so existing libraries can be reused. It has several primitives to make invoking a process over HTTP or building requests to other services really quick. It’s nicely optimized for RESTful interactions.
+
+SimPEL comes with "Singleshot":http://intalio.github.com/singleshot/, task manager extraordinaire, for when you need to give a human face to these processes.
+
+h2(#getting_started). Getting Started
+
+"Download":download.html the SimPEL runtime, follow the "tutorials":first_process.html and peruse the "reference documentation":reference.html.

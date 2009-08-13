@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta content='text/html;charset=UTF-8' http-equiv='Content-Type'>
+    <title>SimPEL &mdash; {{ page.title }}</title>
+    <style type='text/css'>
+      @import 'css/default.css';
+    </style>
+    <style type='text/css'>
+      @import 'css/syntax.css';
+    </style>
+    <style media='print' type='text/css'>
+      @import 'css/print.css';
+    </style>
+    <meta content='Official SimPEL documentation from the people in the know' name='subject'>
+    <link href='/favicon.ico' rel='shortcut icon'>
+  </head>
+  <body>
+    <div id='header'>
+      <div id='logo'>
+        <a href='http://oss.intalio.com'>
+          <img alt='buildr' src='images/intalio-oss.gif'>
+        </a>
+      </div>
+      <div class="quick-links">
+        <ul>
+          <li class="first"><a id="download-link" href="http://www.intalio.com">Corporate</a></li>
+          <li><a id="blog" href="http://bpms.intalio.com">BPMS</a></li>
+        </ul>
+      </div>
+      <div id="main-nav-wrapper">
+        <div class="main-nav-left"></div>
+        <div id="main-nav">
+          <ul>
+            <li class="first"><a title="Intalio|OSS" href="http://oss.intalio.com" id="nav-projects">Projects</a></li>
+            <li><a title="Source Repository" href="http://oss.intalio.com/blog" id="nav-blog">Blog</a></li>
+          </ul>
+          <div class="search">
+            <form method="get" action="/index.php">
+              <input type="text" class="field" name="s" id="s" value="" onfocus="if (this.value == 'Search') {this.value = '';}" onblur="if (this.value == '') {this.value = 'Search';}">
+              <input class="btn-go hoverswap" type="image" src="http://oss.intalio.com/wp-content/themes/i2/images/blank.gif" alt="Search" value="Go">
+            </form>
+          </div>
+        </div>
+        <div class="main-nav-right"></div>
+      </div>
+    </div>
+
+    <div id='wrap' class='center-round'>
+      <div class='center-content'>
+        <div class='box-top'></div>
+          <div id='secondary-nav'>
+            <ul>
+              <li class="nav-header">Start Here</li>
+              <li><a class="nav2" href='index.html'>Welcome</a></li>
+              <li><a class="nav2" href='download.html'>Download</a></li>
+              <li class="nav-header">Tutorials</li>
+              <li><a class="nav2" href='first_process.html'>Your First Process</a></li>
+              <li><a class="nav2" href='resource_fun.html'>Resource Fun</a></li>
+              <li><a class="nav2" href='calling_out.html'>Calling Out</a></li>
+              <li class="nav-header">Reference</li>
+              <li><a class="nav2" href='simpel_reference.html'>SimPEL Reference</a></li>
+              <li><a class="nav2" href='configuration.html'>Configuration</a></li>
+              <li class="nav-header">Get Involved</li>
+              <li><a class="nav2" href='mailing_lists.html'>Mailing Lists</a></li>
+              <li><a class="nav2" href='contributing.html'>Contributing</a></li>
+            </ul>
+          </div>
+          <div id='content'>
+            <h1 id='{{ page.title | downcase | replace(' ', '_') }}'>{{ page.title }}</h1>
+            {{ content }}
+          </div>
+          <div id='footer'>Copyright &copy; 2008-2009 Intalio Inc.</div>
+          <div class='box-bottom'><span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
