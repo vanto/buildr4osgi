@@ -35,14 +35,14 @@ h4. Create your buildfile
 * create a normal buildfile for your project.
 * add <code>require 'buildr4osgi'</code> at the start of the file.
 
-h4. Run <code>buildr osgi:resolve:dependencies ENV[BUILDR_OSGI]=/path/to/your/eclipse/installation</code> from the command line.
+h4. Run <code>buildr osgi:resolve:dependencies OSGi=/path/to/your/eclipse/installation</code> from the command line.
 
 This task will create a dependencies.yml file next to the buildfile, containing all the project dependencies.
 
-h4. Now run <code>buildr osgi:install:dependencies ENV[BUILDR_OSGI]=/path/to/your/eclipse/installation</code>
+h4. Now run <code>buildr osgi:install:dependencies OSGi=/path/to/your/eclipse/installation</code>
 
 You just installed all your dependencies to the local maven repository.
-Ready to share with your team ? Run <code>buildr osgi:upload:dependencies ENV[BUILDR_OSGI]=/path/to/your/eclipse/installation</code>
+Ready to share with your team ? Run <code>buildr osgi:upload:dependencies OSGi=/path/to/your/eclipse/installation</code>
 ==== Finish configuring the buildfile
 OK, this is where the paint is still wet.
 You need to access the <code>dependencies.yml</code> file, read it, and adds the dependencies to the compilation dependencies of the file.
