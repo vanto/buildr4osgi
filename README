@@ -2,8 +2,6 @@ Site built with Jekyll:
 
 http://github.com/mojombo/jekyll/tree/master
 
-To test it, install Jekyll and Pygments and run:
+To test it, install Jekyll and run:
 
-$ jekyll --pygments --server 3034 --auto
-
-For best rendering, you'll need the SimPEL Pygment syntax highlight. It's located in the SimPEL master branch under the tools/pygments directory.
+$ jekyll --server 3034 --auto
