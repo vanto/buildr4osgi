@@ -78,12 +78,6 @@ define "bpmn-modeler" do
 end
 </code></pre>
 
-h2. Install Buildr4osgi
-
-* See the github instructions on how to setup to install gems: http://gems.github.com
-* For the impatient:
-** gem sources -a http://gems.github.com
-** sudo gem install intalio-buildr4osgi
 
 h2. License
 
