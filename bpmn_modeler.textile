@@ -42,3 +42,5 @@ define "bpmn-modeler", :layout => layout do
   end
 end	
 </code></pre>
+
+The dependencies.yml file is available directly from the "BPMN modeler SVN":http://dev.eclipse.org/svnroot/stp/org.eclipse.stp.bpmn-modeler/org.eclipse.stp.bpmn/trunk/dependencies.yml.

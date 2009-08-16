@@ -1,0 +1,26 @@
+---
+layout: default
+title: Developing with Buildr4OSGi
+---
+
+h1. Developing with Buildr4OSGi
+
+Since Buildr4OSGi is a Buildr plugin, we get all the tooling coming with Buildr.
+
+Run <code>rake -T</code> from the command line to see all the tools available.
+
+h2. Running the specs
+
+Let's not keep you waiting:
+
+<code>rake coverage</code>
+
+It will run all the specs AND will generate reports on the code coverage using rcov, available under _reports.
+
+h2. Make a new release
+
+Make sure the Github repository is set up as a Gem repository. By changing the version of the gem in the gemspec file, a new version of the gem will be issued next time you push your changes.
+
+Alternatively, you can create a gem quickly by running:
+
+<code>gem build buildr4osgi.gemspec</code>

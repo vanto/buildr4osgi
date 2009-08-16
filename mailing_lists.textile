@@ -3,6 +3,8 @@ layout: default
 title: Mailing Lists
 ---
 
+h1. Mailing Lists
+
 We host our mailing list on the "Buildr4OSGi google group":http://groups.google.com/group/buildr4osgi.
 
 You can subscribe to it below:

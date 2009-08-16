@@ -3,8 +3,12 @@ layout: default
 title: Welcome
 ---
 
+h1. Tasks
+
+This are the tasks available on your projects. Type <code>buildr -T</code> from the command line if you'd like to see a list of all the tasks you can run.
+
 |_. Name|_. Description|
-|osgi:resolve:dependencies|Resolves the dependencies of the project and the subproject on which Buildr is called by parsing the OSGi containers made available and writing down the artifacts found from there into a file named dependencies.yml next to the Buildfile.|
-|osgi:install:dependencies|Resolves the dependencies of the project and the subproject on which Buildr is called by parsing the OSGi containers made available and installing the artifacts found from there into the local Maven repository.|
-|osgi:upload:dependencies|Resolves the dependencies of the project and the subproject on which Buildr is called by parsing the OSGi containers made available and uploading the artifacts found from there into the releasing Maven repository.|
+|osgi:resolve:dependencies|Resolves the dependencies of the project and its subprojects on which Buildr is called by parsing the OSGi containers made available and _writes down_ the artifacts found from there into a file named *dependencies.yml* next to the Buildfile.|
+|osgi:install:dependencies|Resolves the dependencies of the project and its subprojects on which Buildr is called by parsing the OSGi containers made available and _installs_ the artifacts found from there into the *local Maven repository*.|
+|osgi:upload:dependencies|Resolves the dependencies of the project and its subprojects on which Buildr is called by parsing the OSGi containers made available and _uploads_ the artifacts found from there into the *releasing Maven repository*.|
 |osgi:clean:dependencies|Cleans the dependencies.yml file to show as empty.|
