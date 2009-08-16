@@ -243,11 +243,11 @@ ol.toc li ol.toc {
 
 #footer {
   color: #888;
-  border-top: 1px solid #ccc;
   font-size: 0.9em;
   padding: 0.3em;
-  margin: 2em 0 3em 0em;
+  margin: 2em 0 0em 0em;
   clear: both;
+  text-align: center;
 }
 
 /* Top bar navigation */

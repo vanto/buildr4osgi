@@ -1,0 +1,10 @@
+---
+layout: default
+title: Welcome
+---
+
+|_. Name|_. Description|
+|osgi:resolve:dependencies|Resolves the dependencies of the project and the subproject on which Buildr is called by parsing the OSGi containers made available and writing down the artifacts found from there into a file named dependencies.yml next to the Buildfile.|
+|osgi:install:dependencies|Resolves the dependencies of the project and the subproject on which Buildr is called by parsing the OSGi containers made available and installing the artifacts found from there into the local Maven repository.|
+|osgi:upload:dependencies|Resolves the dependencies of the project and the subproject on which Buildr is called by parsing the OSGi containers made available and uploading the artifacts found from there into the releasing Maven repository.|
+|osgi:clean:dependencies|Cleans the dependencies.yml file to show as empty.|

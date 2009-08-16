@@ -2,96 +2,49 @@
 layout: default
 title: Welcome
 ---
+h1. Welcome
 
-h1. Buildr4osgi
+h2. What Is Buildr4OSGi ?
 
-A plugin for adding OSGi support to Buildr.
+Buildr4OSGi extends the "Buildr":http://buildr.apache.org build system to integrate "OSGi":http://www.osgi.org/  projects as traditional Java projects.
 
-See the "official Buildr site":http://buildr.apache.org
+* With "OSGi":http://www.osgi.org/ , you get the chance of requesting bundles and packages rather than linking to jars directly.
+With Buildr4OSGi, we help you translate all your OSGi dependencies into a set of Java jars that you can use to build reproducibly your project.
 
-h2. Get Started
+* "OSGi":http://www.osgi.org/  bundles are not always present on Maven repositories. With Buildr4OSGi, we upload all your dependencies for you so you can share them accross the team and run your build on a CI server.
 
-h3. Prologue
+h2. Project News
 
-You just had this OSGi bundle started, and everything runs in your development environment.
-You hit one of those issues:
-* You can't run a reproducible build.
-* Bundles are hard to package.
-* And it looks like you are going to have to find a way to resolve all your plugin dependencies (none of them are in a Maven repository!)
+* August 16, 2009: Our website is taking shape.
 
-h3. Enter OSGi
+h2. Getting Started
 
-Your bundle uses one of the mechanisms defined by OSGi to define dependencies:
-*Require-Bundle: you require some bundles, optionally with a version range or a version.
-*Import-Package: you import a package exported by other bundles.
-*Fragment-Host: your bundle has fragments, they will be added to the bundle classpath on activation.
+"Install":/install.html Buildr4OSGi, "read":/simple_expample.html a simple example and "use":/reference.html the reference documentation. 
 
-Each of those instructions have their own use. There's just no way you are going to resolve all your dependencies manually though.
-
-h3. Buildr4osgi jumps on stage
-
-h4. Create your buildfile
-
-* create a normal buildfile for your project.
-* add <code>require 'buildr4osgi'</code> at the start of the file.
-
-h4. Run <code>buildr osgi:resolve:dependencies OSGi=/path/to/your/eclipse/installation</code> from the command line.
-
-This task will create a dependencies.yml file next to the buildfile, containing all the project dependencies.
-
-h4. Now run <code>buildr osgi:install:dependencies OSGi=/path/to/your/eclipse/installation</code>
-
-You just installed all your dependencies to the local maven repository.
-Ready to share with your team ? Run <code>buildr osgi:upload:dependencies OSGi=/path/to/your/eclipse/installation</code>
-==== Finish configuring the buildfile
-OK, this is where the paint is still wet.
-You need to access the <code>dependencies.yml</code> file, read it, and adds the dependencies to the compilation dependencies of the file.
-Here is a quick example:
-<pre><code>
-require "buildr4osgi"
-
-[..]
-$dependencies = File.exists?("dependencies.yml") ? YAML.load(File.read("dependencies.yml")) : {}
-
-def deps(name)
-  [] if ($dependencies[name].nil?) 
-  $dependencies[name]
-end
-
-define "bpmn-modeler" do
-  [..]
  
-  define 'org.eclipse.stp.bpmn'  do
-    compile.with deps(project.name)
-    package :jar
-  end
+h2. Learn More
 
-  define 'org.eclipse.stp.bpmn.diagram' do
-    compile.from(_('customsrc')).with [project('org.eclipse.stp.bpmn'), project('org.eclipse.stp.bpmn.edit')] + deps(project.name) 
-    package :jar
-  end
+* "OSGi":http://www.osgi.org/ 
 
-  define 'org.eclipse.stp.bpmn.validation'  do
-    compile.with [project('org.eclipse.stp.bpmn'), project('org.eclipse.stp.bpmn.diagram')] + deps(project.name) + deps('bpmn-modeler:org.eclipse.stp.bpmn.diagram')
-    package :jar
-  end
-end
-</code></pre>
+OSGi stands for Open Services Gateway initiative, funded in 1999. 
 
+This organization specified a Java-based service platform, decomposed into Java components identified by manifest attributes.
 
-h2. License
+If you never developed a OSGi bundle before today, this is not the best place to start (yet). We recommend you dive into the Eclipse world, check out the various OSGi runtimes available out there, and start doing something. 
 
-Licensed to the Apache Software Foundation (ASF) under one or more
-contributor license agreements.  See the NOTICE file distributed with this
-work for additional information regarding copyright ownership.  The ASF
-licenses this file to you under the Apache License, Version 2.0 (the
-"License"); you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
+When you know what your MANIFEST.MF file should look like, you will be ready for us.
 
-  http://www.apache.org/licenses/LICENSE-2.0
+* "Buildr":http://buildr.apache.org
 
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
-License for the specific language governing permissions and limitations under
-the License.
+Apache Buildr is a build system for Java-based applications, including support for Scala, Groovy and a growing number of JVM languages and tools.
+
+Please take time to become familiar with Buildr before visiting us as most concepts used in this project are derived from the Buildr slang.
+We recommend that you:
+* Visit the "official site":http://buildr.apache.org.
+* Try reading their "Getting Started page":http://buildr.apache.org/getting_started.html.
+
+* "Intalio":http://www.intalio.com
+
+Intalio is the first company to deliver an integrated cloud computing platform designed for the Enterprise. Intalio|Cloud leverages a unique combination of hardware and software to deliver an enterprise-grade cloud computing experience, with dynamic provisioning and elastic scalability, both on demand and on premises. While alternative offerings focus on the Infrastructure as a Service layer, Intalio|Cloud goes all the way up to the application layer, providing best-in-class solutions for BPM and CRM. 
+
+Intalio has over 500 customers, across all vertical industries, in over 50 countries. We are an engineering-driven organization thriving to become a truly global process-managed enterprise. We are passionate about Open Source software, committed to delivering a sustainable Commercial Open Source Model (COSMO), and working hard to discover the chemistry of process.

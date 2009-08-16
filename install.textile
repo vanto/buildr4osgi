@@ -3,28 +3,26 @@ layout: default
 title: Installation
 ---
 
-h1. In a nutshell
+h2. In a nutshell
 
-<pre><code>
-gem sources -a http://gems.github.com
-sudo gem install intalio-buildr4osgi
-</code></pre>
+**<code>gem sources -a http://gems.github.com</code>**
+**<code>sudo gem install intalio-buildr4osgi</code>**
 
-h1. The complete instructions
+h2. The complete instructions
 
-h2. Ruby and the gems
+h3. Ruby and the gems
 
 buildr4osgi is a Ruby gem, a Ruby packaging bundle, so it must be installed through rubygems.
 
 You can install it from the "Rubygems website":http://rubygems.org/.
 
-h2. github
+h3. github
 
 buildr4osgi is hosted on github.com so it must be installed through the github rubygems server.
 
 You should follow the "github instructions":http://gems.github.com on how to setup to install gems hosted on github.com.
 
-h2. Install buildr4osgi
+h3. Install buildr4osgi
 
 The name of the gem is <code>intalio-buildr4osgi</code>.
 

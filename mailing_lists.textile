@@ -3,3 +3,10 @@ layout: default
 title: Mailing Lists
 ---
 
+We host our mailing list on the "Buildr4OSGi google group":http://groups.google.com/group/buildr4osgi.
+
+You can subscribe to it below:
+
+<form action="http://groups.google.com/group/buildr4osgi/boxsubscribe">
+Email: <input type="text" name="email"/><input type=submit name="sub" value="Subscribe">
+</form>
