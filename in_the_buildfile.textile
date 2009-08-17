@@ -3,3 +3,22 @@ layout: default
 title: In the buildfile
 ---
 
+h1. What's new in the buildfile ?
+
+You can access the OSGi functionalities in the buildfile.
+
+h2. The <code>dependencies</code> function
+
+You can access the project dependencies by calling the <code>dependencies</code> function while defining the project:
+
+<pre><code>define("foo") do
+  compile.with dependencies
+end
+</pre></code>
+
+You can also access other project dependencies:
+
+<pre><code>define("bar") do
+  compile.with project("foo").dependencies
+end
+</pre></code>

@@ -2,6 +2,7 @@
 layout: default
 title: The BPMN Modeler Example
 ---
+h1. BPMN modeler example
 
 The "BPMN modeler":http://www.eclipse.org/bpmn is an Eclipse project.
 

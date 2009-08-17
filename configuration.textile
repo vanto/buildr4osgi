@@ -3,3 +3,83 @@ layout: default
 title: Configuration
 ---
 
+h1. Configuration
+
+h2. OSGi containers
+
+You can set up the OSGi containers to be used in Buildr4OSGi in multiple ways.
+
+h3. As an environment variable
+
+On windows: <code>set OSGi="C:\my.osgi;D:\my.other\osgi"</code>
+
+On Linux and Mac: <code>export OSGi="/my.osgi;/my.other/osgi"</code>
+
+Those commands will define two OSGi containers, one placed in my.osgi, and the other in my.other/osgi.
+
+h3. As a Buildr settings entry
+
+Buildr uses "profile settings":http://buildr.apache.org/settings_profiles.html placed in buildr/settings.yaml under your home directory.
+
+You can edit this file and add those lines to add OSGi repositories:
+
+<pre><code>osgi:
+  containers:
+    - /my.osgi
+    - /my.other/osgi
+</pre></code>
+
+h3. In the buildfile
+
+In the Buildfile, you can still change the containers for a particular project.
+
+<pre><code>define("foo") do
+  project.osgi.registry.containers << "/forgot/this/one"
+  compile.with project.dependencies
+end
+</code></pre>
+
+Note that adding containers must be called before accessing the dependencies, otherwise an exception will be thrown.	
+
+h2. Resolving Strategies
+
+h3. Bundle resolving strategies
+
+When one of the bundles requires a bundle with the <code>Require-Bundle</code> header, we are confronted with the choice of choosing a bundle amongst the ones available.
+
+We offer those options by default:
+* <code>:latest</code>: The bundle within the version range with the _latest_ version will be picked.
+* <code>:prompt</code>: The user will be _asked_ to choose for each bundle.
+* <code>:oldest</code>: The bundle within the version range with the _oldest_ version will be picked.
+
+The <code>:latest</code> option is the default one.
+
+To change this value, do:
+<pre><code>project.osgi.options.bundle_resolving_strategy = :oldest</code></pre>
+
+h3. Package resolving strategies
+
+When one of the bundles requires a bundle with the <code>Import-Package</code> header, we are confronted with the choice of choosing a bundle amongst the ones available.
+
+We offer those options by default:
+* <code>:all</code>: All the bundle within the version range exporting the package will be picked.
+* <code>:prompt</code>: The user will be _asked_ to choose for each bundle, or to select them all.
+
+The <code>:all</code> option is the default one.
+
+To change this value, do:
+<pre><code>project.osgi.options.package_resolving_strategy = :prompt</code></pre>
+
+h3. Add more resolving strategies
+
+h4. For bundles
+
+Create a method with the following signature: <code>method_name(bundles)</code>
+
+Then add it to the module <code>OSGi::BundleResolvingStrategies</code>.
+
+Make sure it is part of the module functions, then change the settings to use <code>:method_name</code>.
+
+h4. For packages
+
+It's the same process except that you should contribute the function to <code>OSGi::PackageResolvingStrategies</code>.

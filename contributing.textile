@@ -5,6 +5,12 @@ title: Contributing
 
 h1. Contributing
 
+h2. With Github
+
 We are hosted on "Github":http://www.github.com, so our "repository":http://www.github.com/intalio/buildr4osgi is available for forking.
 
 Follow this "guide":http://github.com/guides/fork-a-project-and-submit-your-modifications for more instructions if you aren't familiar with Git(hub) forking yet.
+
+h2. With patches
+
+Open a bug in our "bug tracker":http://jira.intalio.org/jira/secure/BrowseProject.jspa?id=10020, then attach a patch there. We will incorporate in our code.

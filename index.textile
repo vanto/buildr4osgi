@@ -19,7 +19,7 @@ h2. Project News
 
 h2. Getting Started
 
-"Install":/install.html Buildr4OSGi, "read":/simple_expample.html a simple example and "use":/reference.html the reference documentation. 
+"Install":/install.html Buildr4OSGi, "read":/bpmn_modeler.html a simple example and "use":/reference.html the reference documentation. 
 
  
 h2. Learn More
