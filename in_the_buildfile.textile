@@ -34,7 +34,7 @@ For example:
 
 The project will package by unjarring each library and merge with them, creating the appropriate manifest at the same time.
 
-By default, the META-INF folder of the jars is ignored, but you can set specific rules:
+You can set specific rules for inclusion or exclusion of the files in the jar:
 
 This will exclude nothing:
 <pre><code>library_project(SLF4J, "com.example", "myLibs", "1.0.0", 
