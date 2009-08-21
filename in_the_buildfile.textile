@@ -22,3 +22,27 @@ You can also access other project dependencies:
   compile.with project("foo").dependencies
 end
 </pre></code>
+
+h2. The <code>library_project</code> function
+
+The <code>library_project</code> function will generate a library project for you.
+
+<code>library_project(dependencies, group, id, version, options = {})</code>
+
+For example:
+<pre><code>library_project(SLF4J, "com.example", "myLibs", "1.0.0")</code></pre>
+
+The project will package by unjarring each library and merge with them, creating the appropriate manifest at the same time.
+
+By default, the META-INF folder of the jars is ignored, but you can set specific rules:
+
+This will exclude nothing:
+<pre><code>library_project(SLF4J, "com.example", "myLibs", "1.0.0", 
+	:exclude => "")</code></pre>
+
+This will only include the jsp and html files:
+<pre><code>library_project(SLF4J, "com.example", "myLibs", "1.0.0", 
+	:include => ["*.jsp", "*.html"])</code></pre>
+
+Library projects package your libraries as jars, and their sources (if present) are bundled into zips as well.
+
