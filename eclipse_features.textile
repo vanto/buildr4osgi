@@ -12,22 +12,32 @@ In Buildr4OSGi, you can package a project as a feature by calling <code>package(
 It will create a feature with a jar extension and a feature Maven classifier, ie your jar will look like this:
 <code>{project.id}-{project.version}-feature.jar</code>
 
+The feature files are usually located in <code>eclipse/features/{project.id}-{project.version}.jar</code> inside that archive.
+
+The feature files will be decoupled into 2 files:
+* feature.xml is the file that contains all elements and defines the feature
+
+* feature.properties is the file that contains the externalized strings of feature.xml.
+
 h2. Feature information
 
 You need to provide more information for the feature to generate correctly:
 
-|_. Name|_. Description|
-|label|The label of the feature|
-|provider|The name of the provider for the feature, the company or the organization sponsoring it|
-|description|The description of the feature. This is where you sell your code|
-|changesURL|The URL of the changes to the feature, a release notes page|
-|license|the text of the license|
-|licenseURL|the url of the license|
+|_. Name|_. Description|_. Optional|_. i18n|
+|label|The label of the feature|no|yes|
+|copyright|The copyright mention for the feature|no|no|
+|provider|The name of the provider for the feature, the company or the organization sponsoring it|no|yes|
+|description|The description of the feature. This is where you sell your code|no|yes|
+|changesURL|The URL of the changes to the feature, a release notes page|no|yes|
+|license|the text of the license|no|yes|
+|licenseURL|the url of the license|no|yes|
+|branding_plugin|The id of the plugin used for branding|yes|no|
 
 h2. Update and discovery sites
 
-Additionally, you can provide the update sites for which the feature is registered. They will be made available to the user
-so that he can update the feature in the future.
+you can _optionally_ provide the update sites for which the feature is registered. 
+They will be made available to the user so that he can update the feature in the future.
+Update and discovery site names are placed in feature.properties so that they may be translated.
 
 The update site is defined as a hash with both a name and a URL.
 
@@ -43,7 +53,7 @@ package(:feature).discovery_sites << {:url => "http://example.com/discovery", :n
 
 h2. Plugins
 
-A feature packages plugins like this:
+Plugins are required (otherwise your feature contains nothing really). A feature packages plugins like this:
 
 * Artifacts
 {% highlight ruby %}
