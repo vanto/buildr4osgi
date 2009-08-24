@@ -21,8 +21,7 @@ img {
 }
 
 pre, code {
-  font-family: "DejaVu Sans Mono", "Courier New", "Courier";
-  font-size: 11pt;
+  font: monospace;
 }
 pre {
   margin: 0.3em 0 0.3em 0.9em;

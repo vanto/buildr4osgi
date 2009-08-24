@@ -8,7 +8,8 @@ The "BPMN modeler":http://www.eclipse.org/bpmn is an Eclipse project.
 
 It can be built with Buildr using this Buildfile:
 
-<pre><code>require "buildr4osgi"
+{% highlight ruby %}
+require "buildr4osgi"
 
 repositories.remote << "http://repo1.maven.org/maven2"
 
@@ -42,6 +43,6 @@ define "bpmn-modeler", :layout => layout do
     package :jar
   end
 end	
-</code></pre>
+{% endhighlight %}
 
 The dependencies.yml file is available directly from the "BPMN modeler SVN":http://dev.eclipse.org/svnroot/stp/org.eclipse.stp.bpmn-modeler/org.eclipse.stp.bpmn/trunk/dependencies.yml.

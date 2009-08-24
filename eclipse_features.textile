@@ -1,0 +1,80 @@
+---
+layout: default
+title: In the buildfile
+---
+
+h1. Build your Eclipse features
+
+Eclipse features are a way of packaging plugins together to distribute them.
+
+In Buildr4OSGi, you can package a project as a feature by calling <code>package(:feature)</code>.
+
+It will create a feature with a jar extension and a feature Maven classifier, ie your jar will look like this:
+<code>{project.id}-{project.version}-feature.jar</code>
+
+h2. Feature information
+
+You need to provide more information for the feature to generate correctly:
+
+|_. Name|_. Description|
+|label|The label of the feature|
+|provider|The name of the provider for the feature, the company or the organization sponsoring it|
+|description|The description of the feature. This is where you sell your code|
+|changesURL|The URL of the changes to the feature, a release notes page|
+|license|the text of the license|
+|licenseURL|the url of the license|
+
+h2. Update and discovery sites
+
+Additionally, you can provide the update sites for which the feature is registered. They will be made available to the user
+so that he can update the feature in the future.
+
+The update site is defined as a hash with both a name and a URL.
+
+{% highlight ruby %}
+package(:feature).update_sites << {:url => "http://example.com/update", :name => "My update site"}
+{% endhighlight %}
+
+Same goes for discovery sites (which are used to add themselves to the update sites available so the user can discover more features, some might be needed for this feature):
+
+{% highlight ruby %}
+package(:feature).discovery_sites << {:url => "http://example.com/discovery", :name => "My discovery site"}
+{% endhighlight %}
+
+h2. Plugins
+
+A feature packages plugins like this:
+
+* Artifacts
+{% highlight ruby %}
+package(:feature).plugins << "eclipse:org.eclipse.smthg:jar:1.0.0"
+{% endhighlight %}
+
+* Projects
+{% highlight ruby %}
+package(:feature).plugins << project("my.project")
+{% endhighlight %}
+
+h2. Example
+
+This is how we package the BPMN modeler as a feature. 
+Note the use of the tap method to isolate the code for the feature.
+
+{% highlight ruby %}
+
+define 'org.eclipse.stp.bpmn.feature' do
+  package(:feature).tap {|f|
+    f.label = "BPMN modeler feature"
+    f.provider = "Eclipse.org"
+    f.description = "The BPMN Modeler is a business process diagram editor for business analysts."
+    f.changesURL = "http://www.eclipse.org/bpmn/"
+    f.license = File.read("epl-v10.html")
+    f.licenseURL = "http://www.eclipse.org/legal/epl-v10.html"
+    f.update_sites << {:url => "http://example.com/update", :name => "My update site"}
+    f.discovery_sites = [{:url => "http://example.com/update2", :name => "My update site2"}, 
+      {:url => "http://example.com/upup", :name => "My update site in case"}]
+    f.plugins = [project('org.eclipse.stp.bpmn'), project('org.eclipse.stp.bpmn.diagram'), 
+      project('org.eclipse.stp.bpmn.edit'), project('org.eclipse.stp.bpmn.validation')]
+  }
+end
+{% endhighlight %}

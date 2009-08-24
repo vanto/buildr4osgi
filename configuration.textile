@@ -23,21 +23,23 @@ Buildr uses "profile settings":http://buildr.apache.org/settings_profiles.html p
 
 You can edit this file and add those lines to add OSGi repositories:
 
-<pre><code>osgi:
+{% highlight yaml %}
+osgi:
   containers:
     - /my.osgi
     - /my.other/osgi
-</pre></code>
+{% endhighlight %}
 
 h3. In the buildfile
 
 In the Buildfile, you can still change the containers for a particular project.
 
-<pre><code>define("foo") do
+{% highlight ruby %}
+define("foo") do
   project.osgi.registry.containers << "/forgot/this/one"
   compile.with project.dependencies
 end
-</code></pre>
+{% endhighlight %}
 
 Note that adding containers must be called before accessing the dependencies, otherwise an exception will be thrown.	
 
