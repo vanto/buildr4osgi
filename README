@@ -2,6 +2,6 @@ Site built with Jekyll:
 
 http://github.com/mojombo/jekyll/tree/master
 
-To test it, install Jekyll and run:
+To test it, install Jekyll, Pygments (pygments.org) and run:
 
-$ jekyll --server 3034 --auto
+$ jekyll --server 3034 --auto --pygments
