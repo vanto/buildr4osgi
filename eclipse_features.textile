@@ -21,7 +21,39 @@ The feature files will be decoupled into 2 files:
 
 h2. Feature information
 
-You need to provide more information for the feature to generate correctly:
+h3. Use an existing feature.xml (and eventually its associated feature.properties)
+
+Use this option to set the existing feature files:
+{% highlight ruby%}
+package(:feature).feature_xml = _("feature.xml")
+package(:feature).feature_properties = _("feature.properties")
+{% endhighlight %}
+
+h3. Generate a feature.xml file with a predefined feature.properties
+
+Sometimes it's best to keep feature.properties checked in the source control repository so that you can pass it along to translators.
+
+You have full control over what will be written down in the feature.xml file in that case.
+
+For example, with a feature.properties looking like this:
+
+{% highlight ini %}
+myVeryOwnLabelKey= Old trusty label
+marketing.text= Blahblah
+{% endhighlight %}
+
+You can set the label and the description to the value of their keys in the properties file:
+
+{% highlight ruby%}
+package(:feature).label = "%myVeryOwnLabelKey"
+package(:feature).description = "%marketing.text"
+package(:feature).feature_properties = _("feature.properties")
+{% endhighlight %}
+
+h3. Generate the feature.xml and its feature.properties
+
+You need to provide more information for the feature to generate correctly.
+We will externalize the strings that may be internationalized to feature.properties.
 
 |_. Name|_. Description|_. Optional|_. i18n|
 |label|The label of the feature|no|yes|
@@ -33,9 +65,11 @@ You need to provide more information for the feature to generate correctly:
 |licenseURL|the url of the license|no|yes|
 |branding_plugin|The id of the plugin used for branding|yes|no|
 
+See the example below for a concrete use of those options.
+
 h2. Update and discovery sites
 
-you can _optionally_ provide the update sites for which the feature is registered. 
+you can *optionally* provide the update sites for which the feature is registered. 
 They will be made available to the user so that he can update the feature in the future.
 Update and discovery site names are placed in feature.properties so that they may be translated.
 
