@@ -32,7 +32,7 @@ module OSGi #:nodoc:
         puts "This package #{package} is exported by all the bundles present.\n" +
               "Choose a bundle amongst those presented or press A to select them all:\n" + bundles.sort! {|a, b| a.version <=> b.version }.
         collect {|b| "\t#{bundles.index(b) +1}. #{b.name} #{b.version}"}.join("\n")
-        number = gets.chomp
+        number = $stdin.gets.chomp
         begin
           return bundles if (number == 'A')
           number = number.to_i
