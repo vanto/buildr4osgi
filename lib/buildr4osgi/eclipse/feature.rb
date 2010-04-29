@@ -337,7 +337,7 @@ PROPERTIES
           artifact = Buildr::artifact(artifact.to_hash.merge(:classifier => "sources")) if artifact.is_a?(Buildr::Artifact)
           info, as_dir = adapt_plugin(artifact)
           if !info.nil? 
-            info[:unjarred] = as_dir || (@unjarred[plugin].nil? && @unjarred[plugin][:unjarred])
+            info[:unjarred] = as_dir || (!@unjarred[plugin].nil? && @unjarred[plugin][:unjarred])
             resolved_plugins[info] = artifact
           end
         end
