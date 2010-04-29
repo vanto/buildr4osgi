@@ -21,13 +21,13 @@ describe Buildr4OSGi::CompilerSupport::ExternalC do
   before :all do
     Buildr::Compiler.compilers.delete Buildr::Compiler::Javac
     Buildr::Compiler.compilers.delete Buildr4OSGi::CompilerSupport::OSGiC
+    raise "ENV['EXTERNAL_COMPILER'] is not defined !" unless ENV['EXTERNAL_COMPILER']
   end
   
   describe "should compile a Java project just in the same way javac does" do  
     javac_spec = File.read(File.join(File.dirname(__FILE__), "..", "..", "buildr", "spec", "java", "compiler_spec.rb"))
     javac_spec = javac_spec.match(Regexp.escape("require File.join(File.dirname(__FILE__), '../spec_helpers')\n")).post_match
     javac_spec.gsub!("javac", "externalc")
-    javac_spec.gsub!("nowarn", "warn:none")
     eval(javac_spec)
   end
   
