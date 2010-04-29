@@ -215,12 +215,16 @@ PROPERTIES
       repackage = nil
       sourceBundle = nil
       if plugin.is_a? Buildr::Project
+        manifest = plugin.package(:plugin).manifest.main
+        if File.exists? plugin.path_to("META-INF/MANIFEST.MF")
+          manifest = ::Buildr::Packaging::Java::Manifest.parse(File.read(plugin.path_to("META-INF/MANIFEST.MF"))).main.merge(manifest)
+        end
         size = File.size(plugin.package(:plugin).to_s)
-        name = plugin.package(:plugin).manifest.main["Bundle-SymbolicName"]
-        version = plugin.package(:plugin).manifest.main["Bundle-Version"]
+        name = manifest["Bundle-SymbolicName"]
+        version = manifest["Bundle-Version"]
         group = plugin.group
-        sourceBundle = plugin.package(:plugin).manifest.main["Eclipse-SourceBundle"]
-        as_dir = "dir" == plugin.package(:plugin).manifest.main["Eclipse-BundleShape"]
+        sourceBundle = manifest["Eclipse-SourceBundle"]
+        as_dir = "dir" == manifest["Eclipse-BundleShape"].strip
       else
         plugin.invoke
         if !File.exist?(plugin.to_s) && plugin.classifier.to_s == 'sources'

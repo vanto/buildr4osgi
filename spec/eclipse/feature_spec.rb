@@ -254,6 +254,29 @@ describe Buildr4OSGi::FeatureTask, " when running" do
     end
   end
   
+  it "should let the user tell which plugins should be unjarred from the plugin manifests" do
+    Buildr::write "bar/META-INF/MANIFEST.MF", <<-MANIFEST
+Bundle-SymbolicName: bar
+Bundle-Version: 1.0.0
+Eclipse-BundleShape: dir
+    
+MANIFEST
+    f = @foo.package(:feature)
+    f.plugins.clear
+    @bar = define("bar", :version => "1.0.0", :base_dir => "bar") do
+      package(:bundle)
+    end
+    #f.plugins.<< DEBUG_UI, :unjarred => true
+    f.plugins.<< @bar
+    @foo.package(:feature).invoke
+    feature_file = @foo.package(:feature).to_s
+    File.exists?(feature_file).should be_true
+    Zip::ZipFile.open(feature_file) do |zip|
+      #zip.find_entry("eclipse/plugins/org.eclipse.debug.ui_3.4.1.v20080811_r341/META-INF/MANIFEST.MF").should_not be_nil
+      zip.find_entry("eclipse/plugins/bar_1.0.0/META-INF/MANIFEST.MF").should_not be_nil
+    end
+  end
+  
 end
 
 describe Buildr4OSGi::FeatureTask, " package subprojects" do
