@@ -15,10 +15,15 @@
 
 
 require File.join(File.dirname(__FILE__), '../spec_helpers')
-require 'buildr/scala'
 
 # need to test both with and without SCALA_HOME
 share_as :ScalacCompiler do
+  
+  before(:each) do
+    # Force Scala 2.7.7 for specs; don't want to rely on SCALA_HOME
+    Buildr.settings.build['scala.version'] = "2.7.7"
+  end
+    
   it 'should identify itself from source directories' do
     write 'src/main/scala/com/example/Test.scala', 'package com.example; class Test { val i = 1 }'
     define('foo').compile.compiler.should eql(:scalac)
@@ -152,7 +157,7 @@ describe 'scalac compiler options' do
     compile_task.options.warnings.should be_false
   end
 
-  it 'should set wranings option to true when running with --verbose option' do
+  it 'should set warnings option to true when running with --verbose option' do
     verbose true
     compile_task.options.warnings.should be_true
   end

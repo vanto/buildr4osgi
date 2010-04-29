@@ -354,7 +354,7 @@ module Buildr
         ],
         ['--version', '-V', "Display the program version.",
           lambda { |value|
-            puts "Buildr #{Buildr::VERSION} #{RUBY_PLATFORM[/java/] && '(JRuby '+ (Buildr.settings.build['jruby'] || JRUBY_VERSION) +')'}"
+            puts "Buildr #{Buildr::VERSION}#{RUBY_PLATFORM[/java/] ? " (JRuby #{JRUBY_VERSION})" : ""}"
             exit 0
           }
         ]
@@ -571,7 +571,7 @@ end
 HighLine.use_color = false
 if $stdout.isatty
   begin
-    require 'Win32/Console/ANSI' if Config::CONFIG['host_os'] =~ /mswin/
+    require 'Win32/Console/ANSI' if Config::CONFIG['host_os'] =~ /mswin|win32|dos|cygwin|mingw/i
     HighLine.use_color = true
   rescue LoadError
   end

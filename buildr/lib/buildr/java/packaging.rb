@@ -172,12 +172,13 @@ module Buildr
               # Tempfiles gets deleted on garbage collection, so we're going to hold on to it
               # through instance variable not closure variable.
               @manifest_tmp = Tempfile.new('MANIFEST.MF')
+              File.chmod 0644, @manifest_tmp.path
               self.manifest = File.read(manifest.to_s) if String === manifest || Rake::Task === manifest
               self.manifest = Manifest.new(manifest) unless Manifest === manifest
               #@manifest_tmp.write Manifest::STANDARD_HEADER
               @manifest_tmp.write manifest.to_s
               @manifest_tmp.write "\n"
-              @manifest_tmp.rewind
+              @manifest_tmp.close
               path('META-INF').include @manifest_tmp.path, :as=>'MANIFEST.MF'
             end
           end
@@ -700,8 +701,8 @@ module Buildr
 
       def package_as_javadoc(file_name) #:nodoc:
         ZipTask.define_task(file_name).tap do |zip|
-          zip.include :from=>javadoc.target
-          javadoc.options[:windowtitle] ||= project.comment || project.name
+          zip.include :from=>doc.target
+          doc.options[:windowtitle] ||= project.comment || project.name
         end
       end
 

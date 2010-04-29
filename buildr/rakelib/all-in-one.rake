@@ -70,12 +70,19 @@ task "all-in-one" => :gem do
   lambda do
     puts "Zipping distribution ..."
     cd '..'
-    new_dir  = "#{spec.name}-#{spec.version}-#{dir}"
+    new_dir  = "#{spec.name}-#{spec.version}"
     mv dir, new_dir
     zip = "#{new_dir}.zip"
     rm zip if File.exist? zip
     sh 'zip', '-q', '-r', zip, new_dir
     puts "[X] Zipped distribution"
+   
+    puts "Tarring distribution ..."
+    tar = "#{new_dir}.tar.gz"
+    rm tar if File.exist? tar
+    sh 'tar', 'czf', tar, new_dir
+    puts "[X] Tarred distribution"
+    
     rm_rf new_dir
   end.call
 
