@@ -199,8 +199,8 @@ PROPERTIES
             else 
               plugin
             end
-          info = adapt_plugin(artifact)
-          info[:unjarred] = @unjarred[plugin][:unjarred] unless @unjarred[plugin].nil?
+          info, as_dir = adapt_plugin(artifact)
+          info[:unjarred] = as_dir || @unjarred[plugin][:unjarred] unless @unjarred[plugin].nil?
           resolved_plugins[info] = artifact
         end
       end
@@ -220,6 +220,7 @@ PROPERTIES
         version = plugin.package(:plugin).manifest.main["Bundle-Version"]
         group = plugin.group
         sourceBundle = plugin.package(:plugin).manifest.main["Eclipse-SourceBundle"]
+        as_dir = "dir" == plugin.package(:plugin).manifest.main["Eclipse-BundleShape"]
       else
         plugin.invoke
         if !File.exist?(plugin.to_s) && plugin.classifier.to_s == 'sources'
@@ -233,6 +234,7 @@ PROPERTIES
           unless entry.nil?
             manifest = Manifest.read(zip.read("META-INF/MANIFEST.MF"))
             sourceBundle = manifest.first["Eclipse-SourceBundle"].keys.first.strip unless manifest.first["Eclipse-SourceBundle"].nil?
+            as_dir = "dir" == manifest.first["Eclipse-BundleShape"].keys.first.strip unless manifest.first["Eclipse-BundleShape"].nil?
             if !manifest.first["Bundle-SymbolicName"].nil?
               bundle = ::OSGi::Bundle.fromManifest(manifest, plugin.to_s)
               unless bundle.nil?
@@ -264,7 +266,7 @@ PROPERTIES
         size ||= 0
       end
       return {:id => name, :version => version, 
-        :"download-size" => size, :"install-size" => size, :unpack => false, :manifest => repackage}
+        :"download-size" => size, :"install-size" => size, :unpack => false, :manifest => repackage}, as_dir
     end
     
     #returns the META-INF/MANIFEST.MF file for something that
@@ -333,9 +335,9 @@ PROPERTIES
               plugin
             end
           artifact = Buildr::artifact(artifact.to_hash.merge(:classifier => "sources")) if artifact.is_a?(Buildr::Artifact)
-          info = adapt_plugin(artifact)
+          info, as_dir = adapt_plugin(artifact)
           if !info.nil? 
-            info[:unjarred] = @unjarred[plugin][:unjarred] unless @unjarred[plugin].nil?
+            info[:unjarred] = as_dir || (@unjarred[plugin].nil? && @unjarred[plugin][:unjarred])
             resolved_plugins[info] = artifact
           end
         end
