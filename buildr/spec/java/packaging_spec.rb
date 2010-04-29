@@ -120,6 +120,16 @@ shared_examples_for 'package with manifest' do
       manifest.main['bar'].should eql('Bar')
     end
   end
+  
+  it 'should close the temporary file used for packaging the MANIFEST.MF file' do
+    package_with_manifest 'Foo'=>1, :bar=>'Bar'
+    package = project('foo').package(@packaging)
+    package.invoke
+    module AccessManifestTMP
+      attr_reader :manifest_tmp
+    end
+    (package.dup.extend(AccessManifestTMP).manifest_tmp.closed?).should be_true
+  end
 
   it 'should end hash manifest with EOL' do
     package_with_manifest 'Foo'=>1, :bar=>'Bar'
@@ -185,6 +195,16 @@ shared_examples_for 'package with manifest' do
     inspect_manifest do |manifest|
       manifest.sections.size.should be(1)
       manifest.main['Meta'].should eql('data')
+    end
+  end
+  
+  it 'should give 644 permissions to the manifest' do
+    package_with_manifest  [ {}, { 'Name'=>'first', :Foo=>'first', :bar=>'second' } ]
+    package ||= project('foo').package(@packaging)
+    package.invoke
+    Zip::ZipFile.open(package.to_s) do |zip|
+      permissions = format("%o", zip.file.stat('META-INF/MANIFEST.MF').mode)
+      permissions.should match /644$/
     end
   end
 
@@ -410,6 +430,17 @@ describe Packaging, 'jar' do
   it_should_behave_like 'package with meta_inf'
   before { @meta_inf_ignore = 'MANIFEST.MF' }
 
+  it 'should place the manifest as the first entry of the file' do
+    write 'src/main/java/Test.java', 'class Test {}'
+    define('foo', :version=>'1.0') { package(:jar) }
+    project('foo').package(:jar).invoke
+    Zip::ZipFile.open(project('foo').package(:jar).to_s) do |jar|
+      entries_to_s = jar.entries.map(&:to_s)
+      # Sometimes META-INF/ is counted as first entry, which is fair game.
+      (entries_to_s.first == 'META-INF/MANIFEST.MF' || entries_to_s[1] == 'META-INF/MANIFEST.MF').should be_true
+    end
+  end
+  
   it 'should use files from compile directory if nothing included' do
     write 'src/main/java/Test.java', 'class Test {}'
     define('foo', :version=>'1.0') { package(:jar) }
@@ -460,6 +491,16 @@ describe Packaging, 'jar' do
       define('foo', :version=>'1.0') { package(:jar).with(nil) }
     }.should raise_error
   end
+  
+  it 'should exclude resources when ordered to do so' do
+    write 'src/main/resources/foo.xml', ''
+    foo = define('foo', :version => '1.0') { package(:jar).exclude('foo.xml')}
+    foo.package(:jar).invoke
+    Zip::ZipFile.open(foo.package(:jar).to_s) do |jar|
+      jar.entries.map(&:to_s).sort.should_not include('foo.xml')
+    end
+  end
+    
 end
 
 

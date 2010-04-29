@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.author         = 'Apache Buildr'
   spec.email          = "users@buildr.apache.org"
   spec.homepage       = "http://buildr.apache.org/"
-  spec.summary        = "A build system that doesn't suck"
+  spec.summary        = "Build like you code"
   spec.description    = <<-TEXT
 Apache Buildr is a build system for Java-based applications, including support
 for Scala, Groovy and a growing number of JVM languages and tools.  We wanted
@@ -33,7 +33,7 @@ for those one-off tasks, with a language that's a joy to use.
   # Rakefile needs to create spec for both platforms (ruby and java), using the
   # $platform global variable.  In all other cases, we figure it out from RUBY_PLATFORM.
   spec.platform       = $platform || RUBY_PLATFORM[/java/] || 'ruby'
-  
+
   spec.files          = Dir['{addon,bin,doc,etc,lib,rakelib,spec}/**/*', '*.{gemspec,buildfile}'] +
                         ['LICENSE', 'NOTICE', 'CHANGELOG', 'README.rdoc', 'Rakefile', '_buildr', '_jbuildr']
   spec.require_paths  = 'lib', 'addon'
@@ -53,7 +53,8 @@ for those one-off tasks, with a language that's a joy to use.
   spec.add_dependency 'net-sftp',             '2.0.2'
   spec.add_dependency 'rubyzip',              '0.9.1'
   spec.add_dependency 'highline',             '1.5.1'
-  spec.add_dependency 'rubyforge',            '1.0.5'
+  spec.add_dependency 'json_pure',            '1.4.0'
+  spec.add_dependency 'rubyforge',            '2.0.3'
   spec.add_dependency 'hoe',                  '2.3.3'
   spec.add_dependency 'rjb',                  '1.2.0' if spec.platform.to_s == 'ruby'
   spec.add_dependency 'rjb',                  '1.2.0' if spec.platform.to_s == 'x86-mswin32'

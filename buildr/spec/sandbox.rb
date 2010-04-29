@@ -21,6 +21,9 @@ Buildr.application.instance_eval { @rakefile = File.expand_path('buildfile') }
 repositories.remote << 'http://repo1.maven.org/maven2'
 repositories.remote << 'http://scala-tools.org/repo-releases'
 
+# Force Scala 2.7.7 for specs; don't want to rely on SCALA_HOME
+Buildr.settings.build['scala.version'] = "2.7.7"
+
 # Add a 'require' here only for optional extensions, not for extensions that should be loaded by default.
 require 'buildr/groovy'
 require 'buildr/scala'
