@@ -211,7 +211,7 @@ module OSGi
       
       clean = Rake::Task.define_task('osgi:clean:dependencies').enhance do
         Buildr::write File.join(project.base_dir, "dependencies.yml"), 
-          project.projects.inject({}) {|hash, p| hash.merge({p.name => []})}.merge({project.name => []}).to_yaml
+          project.projects.inject({}) {|hash, p| hash.merge({p.name => {}})}.merge({project.name => {}}).to_yaml
       end
       install.project = project
     end
