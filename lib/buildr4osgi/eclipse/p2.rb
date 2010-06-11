@@ -22,7 +22,7 @@ module Buildr4OSGi
     def package_as_p2_from_site(file_name)
       task = UpdateSitePublisherTask.define_task(file_name)
       task.send :associate_with, self
-      return task
+      task
     end
     
     def package_as_p2_from_site_spec(spec)
@@ -32,76 +32,41 @@ module Buildr4OSGi
     class UpdateSitePublisherTask < ::Buildr::Packaging::Java::JarTask
 
       attr_accessor :site
-      attr_reader :project
-
+      
       def initialize(*args) #:nodoc:
         super
-        enhance do
-#          Buildr.ant('org.eclipse.equinox.p2.publisher.UpdateSitePublisher') do |ant|
-#            work_dir = File.join(project.base_dir, "target", "generated", "update-site")
-#            ant.java :fork => true, :failonerror => true, :classname=>'org.eclipse.equinox.p2.publisher.UpdateSitePublisher' do
-#              ant.arg :value => "metadataRepository" 
-#              ant.arg :value => work_dir
-#              ant.arg :value => "artifactRepository"
-#              ant.arg :value => work_dir
-#              ant.arg :value => "compress"
-#              ant.arg :value => "publishArtifacts"
-#            end
-#          end
-# http://wiki.eclipse.org/Equinox/p2/Publisher
-#the p2.installer and the p2.agent don't work. currently debugging with a local eclipse sdk.
-# download the app here: "org.eclipse.equinox.p2:installer:3.6M2-linux.gtk.x86:tgz"
-# unzip it wherever it is.
-# then invoke it on the cmd line `java -jar #{launcherLocation} -application ... -source #{siteLocation}`
-#we need to give the ability to define an eclipse home that could be invoked as a replacement to this.
-#          p2installer = Buildr::artifact("org.eclipse.platform:eclipse-platform:tgz:3.6M3-linux-gtk")
-#          p2installer.invoke
-#          p2installerHome = File.join(project.base_dir, "target", "p2installer")
-#          Buildr::unzip(p2installerHome => p2installer).extract
-#          p2installerHome = File.join(p2installerHome, "eclipse")
-          
-          #add the missing publisher plugin:
-#          p2publisher = Buildr::artifact("org.eclipse.equinox.p2:org.eclipse.equinox.p2.publisher:jar:1.1.0.v20090831")
-#          p2publisher.invoke
-#          cp p2publisher.to_s, File.join(p2installerHome, "plugins/#{p2publisher.id}_#{p2publisher.version}.jar")
+        
+        enhance do |p2_task|
+          fail "The p2 task needs to be associated with a site " unless site
+          p2_task.enhance [site]
+          #add a prerequisite to the list of prerequisites, gives a chance
+          #for other prerequisites to be placed before this block is executed.
+          p2_task.enhance do 
+            targetP2Repo = File.join(project.base_dir, "target", "p2repository")
+            mkpath targetP2Repo
+            Buildr::unzip(targetP2Repo=>project.package(:site).to_s).extract
+            eclipseSDK = Buildr::artifact("org.eclipse:eclipse-SDK:zip:3.6M3-win32")
+            eclipseSDK.invoke
+            Buildr::unzip(File.dirname(eclipseSDK.to_s) => eclipseSDK.to_s).extract
 
-          siteWithoutP2 = project.package(:site)
-          siteWithoutP2.invoke
+            launcherPlugin = Dir.glob("#{File.dirname(eclipseSDK.to_s)}/eclipse/plugins/org.eclipse.equinox.launcher_*")[0]
 
-          targetDir = File.join(project.base_dir, "target")
-          targetP2Repo = File.join(project.base_dir, "target", "p2repository");
-          mkpath targetP2Repo
-          Buildr::unzip(targetP2Repo=>siteWithoutP2.to_s).extract
-          eclipseSDK = Buildr::artifact("org.eclipse:eclipse-SDK:zip:3.6M3-win32")
-          eclipseSDK.invoke
-          p2installerHome = File.dirname eclipseSDK.to_s#"~/proj/eclipses/eclipse-SDK-3.6M3"
-          Buildr::unzip( p2installerHome => eclipseSDK.to_s ).extract
-          p2installerHome += "/eclipse"
-          launcherPlugin = Dir.glob("#{p2installerHome}/plugins/org.eclipse.equinox.launcher_*")[0]
-          
-          application = "org.eclipse.equinox.p2.publisher.UpdateSitePublisher"
-          #this is where the artifacts are published.
-          metadataRepository_url = "file:#{targetP2Repo}"
-          artifactRepository_url = metadataRepository_url
-          metadataRepository_name = project.id + "_" + project.version
-          artifactRepository_name = project.id + "_" + project.version
-          source_absolutePath = targetP2Repo
-          
-          cmdline = "java -jar #{launcherPlugin} -application #{application} \
--metadataRepository #{metadataRepository_url} \
--artifactRepository #{artifactRepository_url} \
--metadataRepositoryName #{metadataRepository_name} \
--artifactRepositoryName #{artifactRepository_name} \
--source #{source_absolutePath} \
--configs gtk.linux.x86 \
--publishArtifacts \
--clean -consoleLog"
-          puts "Invoking P2's metadata generation: #{cmdline}"
-          result = `#{cmdline}`
-          puts result
-          
-          include targetP2Repo, :as=>"."
-          
+            cmdline <<-CMD
+            java -jar #{launcherPlugin} -application org.eclipse.equinox.p2.publisher.UpdateSitePublisher
+            -metadataRepository file:#{targetP2Repo} 
+            -artifactRepository file:#{targetP2Repo}
+            -metadataRepositoryName #{project.name}_#{project.version}
+            -artifactRepositoryName #{project.name}_#{project.version} 
+            -source #{targetP2Repo} 
+            -configs gtk.linux.x86 
+            -publishArtifacts 
+            -clean -consoleLog
+            CMD
+            info "Invoking P2's metadata generation: #{cmdline}"
+            system cmdline
+
+            include targetP2Repo, :as => "."
+          end
         end
       end
 
@@ -123,6 +88,8 @@ module Buildr4OSGi
 
       private 
 
+      attr_reader :project
+      
       def associate_with(project)
         @project = project
       end
