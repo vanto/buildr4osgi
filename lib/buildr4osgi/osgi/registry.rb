@@ -45,6 +45,19 @@ module OSGi
   #
   class Registry
     
+    def release_to
+      unless @release_to
+        prefs = Buildr.settings.build
+        @release_to = prefs['osgi']['release_to'].strip unless prefs['osgi'].nil? || prefs['osgi']['release_to'].nil?
+        @release_to ||= "#{ENV['HOME']}/.m2/osgi"
+      end
+      @release_to
+    end
+
+    def release_to=(release_to)
+      @release_to = release_to
+    end
+
     # 
     # Sets the containers of the registry
     # Raises an exception if containers have been resolved already.

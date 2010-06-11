@@ -250,6 +250,7 @@ module OSGi
           }
         })
         p_r.filter.exclude(/target/)
+        p_r.filter.exclude(/report/)
         
         properties = ResourcesTask.define_task(:resources_src)
         properties.send :associate_with, self, :resources_src

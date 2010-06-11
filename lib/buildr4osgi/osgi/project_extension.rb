@@ -118,6 +118,23 @@ module OSGi
       end
     end
   end
+
+  class InstallBundlesTask < Rake::Task #:nodoc:
+    attr_accessor :project
+    def initialize(*args) #:nodoc:
+      super
+      enhance do |task|
+        puts "Deploy directory: #{OSGi.registry.release_to}/plugins"
+        mkpath "#{OSGi.registry.release_to}/plugins"
+        project.projects.each do |subp|
+          subp.packages.select {|package| package.is_a?(::OSGi::BundlePackaging)}.each do |package|
+            puts "Deploying #{subp.artifact(package)} to #{OSGi.registry.release_to}"
+            cp(subp.artifact(package).to_s, "#{OSGi.registry.release_to}/plugins") 
+          end
+        end
+      end
+    end
+  end
   
   class InstallTask < Rake::Task #:nodoc:
     include BundleCollector
@@ -168,6 +185,7 @@ module OSGi
             if local
               artifact = Buildr::artifact(bundle.to_s)
               installed = Buildr.repositories.locate(artifact)
+              rm_r installed
               mkpath File.dirname(installed)
               Buildr::artifact(bundle.to_s).from(bundle.file).install
               info "Installed #{installed}"
@@ -197,6 +215,8 @@ module OSGi
       Project.local_task('osgi:upload:dependencies') { |name| "Upload dependencies for #{name}" }
       desc 'Cleans the dependencies.yml file'
       Project.local_task('osgi:clean:dependencies') {|name| "Clean dependencies for #{name}"}
+      desc 'Installs the bundle projects into an OSGi repository'
+      Project.local_task('osgi:install:bundles') {|name| "Install bundles for #{name}"}
     end
 
     before_define do |project|
@@ -213,7 +233,9 @@ module OSGi
         Buildr::write File.join(project.base_dir, "dependencies.yml"), 
           project.projects.inject({}) {|hash, p| hash.merge({p.name => {}})}.merge({project.name => {}}).to_yaml
       end
-      install.project = project
+
+      install_bundles = InstallBundlesTask.define_task('osgi:install:bundles')
+      install_bundles.project = project
     end
 
     #
