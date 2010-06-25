@@ -185,7 +185,7 @@ module OSGi
             if local
               artifact = Buildr::artifact(bundle.to_s)
               installed = Buildr.repositories.locate(artifact)
-              rm_r installed
+              rm_rf installed
               mkpath File.dirname(installed)
               Buildr::artifact(bundle.to_s).from(bundle.file).install
               info "Installed #{installed}"
