@@ -127,7 +127,7 @@ module OSGi
         unless @libs.nil? || @libs.empty?
           artifacts = Buildr.artifacts(@libs)
           path('lib').include artifacts
-          manifest["Bundle-Classpath"] = [".", artifacts.collect {|a| "lib/#{File.basename(a.to_s)}"}].flatten.join(",")
+          manifest["Bundle-ClassPath"] = [".", artifacts.collect {|a| "lib/#{File.basename(a.to_s)}"}].flatten.join(",")
           
         end
       end
@@ -275,8 +275,8 @@ module OSGi
         manifest["Bundle-SymbolicName"] ||= self.name.split(":").last # if it was resetted to nil, we force the id to be added back.
         
         plugin.with :manifest=> manifest, :meta_inf=>meta_inf
-        unless manifest["Bundle-Classpath"].nil? || compile.target.nil?
-          entry = manifest["Bundle-Classpath"].split(",").first
+        unless manifest["Bundle-ClassPath"].nil? || compile.target.nil?
+          entry = manifest["Bundle-ClassPath"].split(",").first
           plugin.path(entry).include compile.target, :as=>'.'
           plugin.path(entry).include properties.target, :as=>'.' unless properties.target.nil?
           plugin.with [resources.target, p_r.target].compact

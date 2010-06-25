@@ -302,7 +302,7 @@ describe OSGi::BundleTask, "with packaging libs" do
     end
   end
   
-  it "should add the libraries to the Bundle-Classpath" do
+  it "should add the libraries to the Bundle-ClassPath" do
     foo = define("foo", :version => "1.0.0") do
       compile.using :target=>'1.5'
       package(:plugin).libs << SLF4J[0]
@@ -311,7 +311,7 @@ describe OSGi::BundleTask, "with packaging libs" do
     foo.package(:plugin).invoke
     Zip::ZipFile.open(foo.package(:plugin).to_s) do |zip|
       zip.find_entry("META-INF/MANIFEST.MF").should_not be_nil
-      zip.read("META-INF/MANIFEST.MF").should match(/Bundle-Classpath: \.,lib\/slf4j-api-1\.5\.8\.jar/)
+      zip.read("META-INF/MANIFEST.MF").should match(/Bundle-ClassPath: \.,lib\/slf4j-api-1\.5\.8\.jar/)
     end
   end
   
@@ -369,8 +369,8 @@ describe OSGi::BundleTask, "with existing manifests" do
     
   end
   
-  it "should use the Bundle-Classpath entry whenever present to determine the classpath" do
-    Buildr::write "META-INF/MANIFEST.MF", "Bundle-SymbolicName: dev\nExport-Package: package1,\n package2\nBundle-Version: 1.0.0\nBundle-Classpath: WEB-INF/classes"
+  it "should use the Bundle-ClassPath entry whenever present to determine the classpath" do
+    Buildr::write "META-INF/MANIFEST.MF", "Bundle-SymbolicName: dev\nExport-Package: package1,\n package2\nBundle-Version: 1.0.0\nBundle-ClassPath: WEB-INF/classes"
     Buildr::write "src/main/java/Hello.java", "public class Hello {}"
     
     foo = define("foo", :version => "1.0.0.qualifier") do
@@ -384,8 +384,8 @@ describe OSGi::BundleTask, "with existing manifests" do
     
   end
   
-  it "should use the _first_ Bundle-Classpath entry whenever present to determine the classpath" do
-    Buildr::write "META-INF/MANIFEST.MF", "Bundle-SymbolicName: dev\nExport-Package: package1,\n package2\nBundle-Version: 1.0.0\nBundle-Classpath: WEB-INF/classes,else"
+  it "should use the _first_ Bundle-ClassPath entry whenever present to determine the classpath" do
+    Buildr::write "META-INF/MANIFEST.MF", "Bundle-SymbolicName: dev\nExport-Package: package1,\n package2\nBundle-Version: 1.0.0\nBundle-ClassPath: WEB-INF/classes,else"
     Buildr::write "src/main/java/Hello.java", "public class Hello {}"
     
     foo = define("foo", :version => "1.0.0.qualifier") do
