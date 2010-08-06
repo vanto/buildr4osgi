@@ -15,7 +15,6 @@
 
 require 'buildr4osgi/osgi'
 require 'buildr4osgi/eclipse'
-require 'buildr4osgi/compile'
 
 # Methods defined in Buildr4OSGi are both instance methods (e.g. when included in Project)
 # and class methods when invoked like Buildr4OSGi.project_library(SLF4J, "group", "foo", "1.0.0").
